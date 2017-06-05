@@ -129,6 +129,9 @@ def stats(request):
     )
 
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def about(request):
     """Renders the about page."""
     assert isinstance(request, HttpRequest)
@@ -297,3 +300,9 @@ def votedate(request, evtdateid):
             'all_event': all_event
         }
     )
+
+
+
+from django.views import generic
+class LoginView(generic.TemplateView):
+    template_name = "app/login.html"
