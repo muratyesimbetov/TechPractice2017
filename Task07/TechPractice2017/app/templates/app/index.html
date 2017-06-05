@@ -26,6 +26,7 @@
                         <td> {{ evnt.date }}</td>
                         <td> {{ evnt.details|linebreaks  }}</td>
                         <td>  {{ evnt.participants.count }}</td>
+                        <td>  <a class="btn btn-danger btn-md"  href="evnt/{{evnt.eventid}} ">Детальнiше</a> </td>
                     </tr>
                 {% endfor %}
                     

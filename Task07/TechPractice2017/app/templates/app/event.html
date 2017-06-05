@@ -30,6 +30,10 @@
             Кінець голосування :
             {{ event.votingEnd  }}
         </h3>
+        <h3>
+            Link to shear :
+            <a href="/evnt/{{event.eventid}}"> yandex.ru/evnt/{{event.eventid}}</a>
+        </h3>
 
 
         <form class="form-signin" action="{% url 'voting' %}" method="POST">

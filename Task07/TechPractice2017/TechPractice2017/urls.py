@@ -39,10 +39,10 @@ urlpatterns = [
     url(r'^rnd_evnt', core_views.rnd_evnt, name='rnd_evnt'),
     url(r'^creating', core_views.creating, name='creating'),
     url(r'^voting', core_views.voting, name='voting'),
-     url(r'^votedate/(?P<evtdateid>[0-9]+)', core_views.votedate, name='votedate'),
+    url(r'^votedate/(?P<evtdateid>[0-9]+)', core_views.votedate, name='votedate'),
     url(r'^event_date_creating', core_views.event_date_creating, name='event_date_creating'),
     url(r'^stats', core_views.stats,name='stats'),
-    url(r'^evnt/(?P<id>[0-9]{8})',core_views.evnt,name='evnt' ),
+    url(r'^evnt/(?P<id>[0-9]+)',core_views.evnt,name='evnt' ),
     url(r'^search',core_views.search, name='search'),
 
     url(r'^login', core_views.LoginView.as_view(), name='login'),
