@@ -3,6 +3,7 @@
 Definition of views.
 """
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.template import RequestContext
@@ -103,7 +104,8 @@ def search(request):
                     'all_event': evnt
                 }
             )
-            
+
+@login_required         
 def creating(request):
     return render(
         request,
@@ -129,9 +131,7 @@ def stats(request):
     )
 
 
-from django.contrib.auth.decorators import login_required
 
-@login_required
 def about(request):
     """Renders the about page."""
     assert isinstance(request, HttpRequest)
@@ -148,7 +148,7 @@ def about(request):
 
 from app.forms import NewEventForm
 
-
+@login_required   
 def creating(request):
     evt_title = "no title"
     evt_description = "no description"
@@ -203,7 +203,7 @@ def creating(request):
 
 from app.forms import EventDateForm
 
-
+@login_required   
 def event_date_creating(request):
     evt_date = datetime.now()
 
@@ -257,7 +257,7 @@ def evnt(request, id):
 
 from app.forms import VotingForm
 
-
+@login_required
 def voting(request):
     if request.method == "POST":
         # Get the posted form
@@ -283,10 +283,10 @@ def voting(request):
             votingForm = VotingForm()
             return render(request, 'app/home.html')
 
-
+@login_required
 def votedate(request, evtdateid):
     evtdateid = int(evtdateid)
-    userId = 1  # login TODO
+    userId = 5  # login TODO
 
     models.MakeVote(evtdateid, userId)
 
