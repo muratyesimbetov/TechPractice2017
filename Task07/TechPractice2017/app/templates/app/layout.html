@@ -34,8 +34,11 @@
                     <li><a href="{% url 'home' %}">Додому!</a></li>
                     <li><a href="{% url 'about' %}">Очём</a></li>
                 </ul>
-                <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Пошук...">
+                <form class="navbar-form navbar-right" action="{% url 'search' %}" method="POST">
+                    {% csrf_token %}
+                        <input type="text" name="evnt_name" class="form-control" placeholder="Пошук...">
+                       <button style="display: inline;" class="btn btn-danger btn-sm" type="submit" value="Login">Шукати</button>
+
                 </form>
                 {% include 'app/loginpartial.html' %}
             </div>

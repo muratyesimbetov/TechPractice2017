@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^event_date_creating', app.views.event_date_creating, name='event_date_creating'),
     url(r'^stats', app.views.stats,name='stats'),
     url(r'^evnt/(?P<id>[0-9]{8})',app.views.evnt,name='evnt' ),
+    url(r'^search',app.views.search, name='search'),
     url(r'^login/$',
         django.contrib.auth.views.login,
         {

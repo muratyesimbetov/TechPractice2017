@@ -83,7 +83,27 @@ def rnd_evnt(request):
         }
     )
 
+from app.forms import SearchForm
+def search(request):
+    if request.method == "POST":
+        # Get the posted form
 
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+
+            evnt_name = search_form.cleaned_data['evnt_name']
+            evnt = models.GetEventByName(evnt_name)
+
+            return render(
+                request,
+                'app/index.html',
+                {
+                    'title': 'Сторынка пошуку',
+                    'year': datetime.now().year,
+                    'all_event': evnt
+                }
+            )
+            
 def creating(request):
     return render(
         request,

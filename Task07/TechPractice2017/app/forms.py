@@ -35,3 +35,7 @@ class EventDateForm(forms.Form):
 
 class VotingForm(forms.Form):
     evt_id = forms.CharField()
+
+
+class SearchForm(forms.Form):
+    evnt_name = forms.CharField()

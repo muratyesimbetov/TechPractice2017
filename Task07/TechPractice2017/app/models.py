@@ -135,6 +135,13 @@ def GetEventInfo(evtid):
     evt = EVENT.objects.get(eventid=evtid)
     return evt
     
+def GetEventByName(evnt_name):
+    from app.models import EVENT
+    evt = EVENT.objects.filter(name__contains=evnt_name)
+    #evt = EVENT.objects.extra(where=["name LIKE '%" + evnt_name + "%"])
+
+    return evt
+    
 
 def GetAllEvent():
     '''return all event'''
