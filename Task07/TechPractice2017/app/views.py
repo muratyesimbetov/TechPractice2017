@@ -9,21 +9,23 @@ from django.template import RequestContext
 from datetime import datetime
 from app import models
 
+
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
 
-    all_event = models.GetAllEvent() 
+    all_event = models.GetAllEvent()
 
     return render(
         request,
         'app/index.html',
         {
-            'title':'Домашня сторінка',
-            'year':datetime.now().year,
-            'all_event':all_event
+            'title': 'Домашня сторінка',
+            'year': datetime.now().year,
+            'all_event': all_event
         }
     )
+
 
 def order_asc(request):
     """Renders the order_asc page."""
@@ -35,11 +37,12 @@ def order_asc(request):
         request,
         'app/index.html',
         {
-            'title':'Найбільш популярні',
-            'year':datetime.now().year,
-            'all_event':all_event
+            'title': 'Найбільш популярні',
+            'year': datetime.now().year,
+            'all_event': all_event
         }
     )
+
 
 def order_desc(request):
     """Renders the order_desc page."""
@@ -51,9 +54,9 @@ def order_desc(request):
         request,
         'app/index.html',
         {
-            'title':'Найменш популярні',
-            'year':datetime.now().year,
-            'all_event':all_event
+            'title': 'Найменш популярні',
+            'year': datetime.now().year,
+            'all_event': all_event
         }
     )
 
@@ -62,37 +65,36 @@ def rnd_evnt(request):
     """Renders the random event page."""
     assert isinstance(request, HttpRequest)
 
-    all_event = models.GetAllEvent() 
-    
+    all_event = models.GetAllEvent()
+
     from random import randint
-    ent_indx = randint(0,len(all_event) - 1)
+    ent_indx = randint(0, len(all_event) - 1)
     rnd_event = all_event[ent_indx]
 
     return render(
         request,
         'app/event.html',
         {
-            'title':'Випадкова подія',
-            'message':'Your application description page.',
+            'title': 'Випадкова подія',
+            'message': 'Your application description page.',
             'view_decript': 'Найвипадковіша подія у світі, зустрічайте',
-            'year':datetime.now().year,
-            'event':rnd_event
+            'year': datetime.now().year,
+            'event': rnd_event
         }
-    ) 
+    )
 
 
 def creating(request):
-    
     return render(
         request,
         'app/creating.html',
         {
-            'title':'створення нової події'
+            'title': 'створення нової події'
         }
-    ) 
+    )
+
 
 def stats(request):
-
     all_evnt_count = models.GetAllEventsCount()
     vouted_user_count = models.GetVotedUsersCount()
 
@@ -100,9 +102,9 @@ def stats(request):
         request,
         'app/stats.html',
         {
-            'title':'Статисика створенних подій',
-            'all_evnt_count':all_evnt_count,
-            'vouted_user_count':vouted_user_count
+            'title': 'Статисика створенних подій',
+            'all_evnt_count': all_evnt_count,
+            'vouted_user_count': vouted_user_count
         }
     )
 
@@ -114,17 +116,20 @@ def about(request):
         request,
         'app/about.html',
         {
-            'title':'О чому?',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
+            'title': 'О чому?',
+            'message': 'Your application description page.',
+            'year': datetime.now().year,
         }
     )
 
-from app.forms import NewEventForm
-def creating(request):
 
+from app.forms import NewEventForm
+
+
+def creating(request):
     evt_title = "no title"
     evt_description = "no description"
+    evt_place = "no place"
     evt_date = datetime.now()
     evt_vote_start = datetime.now()
     evt_vote_end = datetime.now()
@@ -141,8 +146,10 @@ def creating(request):
             evt_date = eventForm.cleaned_data['evt_date']
             evt_vote_start = eventForm.cleaned_data['evt_vote_start']
             evt_vote_end = eventForm.cleaned_data['evt_vote_end']
+            evt_place = eventForm.cleaned_data['evt_place']
 
-            evt_id = models.CreateEventTotal(evt_title,evt_description,evt_date,evt_vote_start,evt_vote_end)
+            evt_id = models.CreateEventTotal(evt_title, evt_description, evt_place, evt_date, evt_vote_start,
+                                             evt_vote_end)
 
             return render(
                 request,
@@ -163,21 +170,24 @@ def creating(request):
             'title': 'створення нової події',
             'evt_title': evt_title,
             'evt_description': evt_description,
+            'evt_place': evt_place,
             'evt_date': evt_date,
             'evt_vote_start': evt_vote_start,
             'evt_vote_end': evt_vote_end
         }
     )
 
-from app.forms import EventDateForm
-def event_date_creating(request):
 
+from app.forms import EventDateForm
+
+
+def event_date_creating(request):
     evt_date = datetime.now()
 
-    if 'evt_id' in request :
+    if 'evt_id' in request:
         evt_id = request['evt_id']
-    
-    if 'evt_title' in request :
+
+    if 'evt_title' in request:
         evt_title = request['evt_title']
 
     if request.method == "POST":
@@ -190,7 +200,7 @@ def event_date_creating(request):
             evt_title = eventForm.cleaned_data['evt_title']
 
             mid = models.MakePossibleDate(evt_date)
-            models.MakePairDateEvent(mid,evt_id)
+            models.MakePairDateEvent(mid, evt_id)
     else:
         eventForm = EventDateForm()
 
@@ -206,63 +216,64 @@ def event_date_creating(request):
     )
 
 
-def evnt(request, id) :
-
+def evnt(request, id):
     evnt = models.GetEventInfo(id)
 
     return render(
         request,
         'app/event.html',
         {
-            'title':evnt.name,
-            'view_decript':'Подія',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
-            'event':evnt
+            'title': evnt.name,
+            'view_decript': 'Подія',
+            'message': 'Your application description page.',
+            'year': datetime.now().year,
+            'event': evnt
         }
     )
 
 
 from app.forms import VotingForm
-def voting(request) :
 
+
+def voting(request):
     if request.method == "POST":
         # Get the posted form
         votingForm = VotingForm(request.POST)
 
         if votingForm.is_valid():
             evt_id = votingForm.cleaned_data['evt_id']
-            evt_id = int(evt_id)            
+            evt_id = int(evt_id)
 
             dates = models.GetEvtDatesForEvent(evt_id)
             evnt = models.GetEventInfo(evt_id)
 
             return render(
-                    request,
-                    'app/voting.html',
-                    {
-                        'evnt': evnt,
-                        'evt_dates': dates
-                    }
+                request,
+                'app/voting.html',
+                {
+                    'evnt': evnt,
+                    'evt_dates': dates
+                }
             )
-            
+
         else:
             votingForm = VotingForm()
-            return render(request,'app/home.html')
+            return render(request, 'app/home.html')
 
-def votedate(request,evtdateid) :
+
+def votedate(request, evtdateid):
     evtdateid = int(evtdateid)
-    userId = 1 #login TODO
+    userId = 1  # login TODO
 
-    models.MakeVote(evtdateid,userId)
+    models.MakeVote(evtdateid, userId)
 
-    all_event = models.GetAllEvent() 
+    all_event = models.GetAllEvent()
     return render(
         request,
         'app/index.html',
         {
-            'title':'Домашня сторінка',
-            'year':datetime.now().year,
-            'all_event':all_event
+            'title': 'Домашня сторінка',
+            'year': datetime.now().year,
+            'all_event': all_event
         }
     )

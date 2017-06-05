@@ -10,10 +10,13 @@
         {% csrf_token %}>
         <h2 class="form-signin-heading">Створення події</h2>
         <label for="inputTitle" class="sr-only">Назва</label>
-
         <input type="text" id="inputTitle" class="form-control" name="evt_title" placeholder="Назва події" required autofocus>
+
         <label for="inputDescription" class="sr-only">Опис</label>
         <input type="text" id="inputDescription" class="form-control" name="evt_description" placeholder="Опис події" required>
+
+        <label for="inputPlace" class="sr-only">Місце</label>
+        <input type="text" id="inputPlace" class="form-control" name="evt_place" placeholder="Місце" required>
 
         <h3 class="form-signin-heading">Дати події</h3>
         <p>
