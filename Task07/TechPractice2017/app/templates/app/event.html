@@ -2,38 +2,38 @@
 {% block content %}
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h2 class="sub-header">{{view_decript}}</h2>
-        <h3>
+        <h5>
             Номер :
             {{ event.eventid  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Назіва :
             {{ event.name  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Деталі :
             {{ event.details  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Місце :
             {{ event.place  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Дата події :
             {{ event.date  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Початок голосування :
             {{ event.votingStart  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Кінець голосування :
             {{ event.votingEnd  }}
-        </h3>
-        <h3>
+        </h5>
+        <h5>
             Link to share :
             <a href="/evnt/{{event.eventid}}"> pactum.com/evnt/{{event.eventid}}</a>
-        </h3>
+        </h5>
 
         {% if date_now <= event.votingEnd and date_now <= event.date %}
             <form class="form-signin" action="{% url 'voting' %}" method="POST">
@@ -44,7 +44,7 @@
             </form>
         {% else %}
             <h2>UFO вже скомуніздило це голосування (Голосування завершено) </h2>
-            <h3>Подія відбудеться(відбулась) : {{meet_event_date_max}} </h3>
+            <h5>Подія відбудеться(відбулась) : {{meet_event_date_max}} </h5>
         {% endif %}
     </div>
 
