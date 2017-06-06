@@ -36,9 +36,8 @@
                 </ul>
                 <form class="navbar-form navbar-right" action="{% url 'search' %}" method="POST">
                     {% csrf_token %}
-                        <input type="text" name="evnt_name" class="form-control" placeholder="Пошук...">
-                       <button style="display: inline;" class="btn btn-danger btn-sm" type="submit" value="Login">Шукати</button>
-
+                    <input style="width:190px" type="text" name="evnt_name" class="form-control" placeholder="Пошук...">
+                    <button class="btn btn-danger btn-sm" type="submit" value="Login">Шукати</button>
                 </form>
                 {% include 'app/loginpartial.html' %}
             </div>

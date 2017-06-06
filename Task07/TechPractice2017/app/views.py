@@ -72,6 +72,8 @@ def rnd_evnt(request):
     ent_indx = randint(0, len(all_event) - 1)
     rnd_event = all_event[ent_indx]
 
+    meet_event_date_max = models.GetMaxEvtDateFromEvent(rnd_event.eventid)
+
     return render(
         request,
         'app/event.html',
@@ -80,7 +82,9 @@ def rnd_evnt(request):
             'message': 'Your application description page.',
             'view_decript': 'Найвипадковіша подія у світі, зустрічайте',
             'year': datetime.now().year,
-            'event': rnd_event
+            'event': rnd_event,
+            'date_now': datetime.now(),
+            'meet_event_date_max':meet_event_date_max
         }
     )
 
@@ -150,6 +154,7 @@ from app.forms import NewEventForm
 
 @login_required   
 def creating(request):
+    
     evt_title = "no title"
     evt_description = "no description"
     evt_place = "no place"
@@ -242,6 +247,10 @@ def event_date_creating(request):
 def evnt(request, id):
     evnt = models.GetEventInfo(id)
 
+    meet_event_date_max = models.GetMaxEvtDateFromEvent(id)
+
+    date_now = datetime.today().date()
+
     return render(
         request,
         'app/event.html',
@@ -250,7 +259,9 @@ def evnt(request, id):
             'view_decript': 'Подія',
             'message': 'Your application description page.',
             'year': datetime.now().year,
-            'event': evnt
+            'event': evnt,
+             'date_now': date_now,
+            'meet_event_date_max': meet_event_date_max
         }
     )
 
@@ -286,9 +297,13 @@ def voting(request):
 @login_required
 def votedate(request, evtdateid):
     evtdateid = int(evtdateid)
-    userId = 5  # login TODO
+     
+    user_auth = request.user # login TODO
+    models.UserDbSynhron(user_auth)
+    userId =  user_auth.id  
 
     models.MakeVote(evtdateid, userId)
+
 
     all_event = models.GetAllEvent()
     return render(

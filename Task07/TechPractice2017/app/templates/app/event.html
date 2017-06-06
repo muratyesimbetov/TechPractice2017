@@ -31,17 +31,21 @@
             {{ event.votingEnd  }}
         </h3>
         <h3>
-            Link to shear :
-            <a href="/evnt/{{event.eventid}}"> yandex.ru/evnt/{{event.eventid}}</a>
+            Link to share :
+            <a href="/evnt/{{event.eventid}}"> pactum.com/evnt/{{event.eventid}}</a>
         </h3>
 
+        {% if date_now <= event.votingEnd and date_now <= event.date %}
+            <form class="form-signin" action="{% url 'voting' %}" method="POST">
+            {% csrf_token %}
 
-        <form class="form-signin" action="{% url 'voting' %}" method="POST">
-        {% csrf_token %}
-
-            <input style="display:none" type="text" name="evt_id" value="{{event.eventid}}">
-            <button class="btn btn-success btn-md" type="submit" value="Login">Прийняти участь</button>
-        </form>
+                <input style="display:none" type="text" name="evt_id" value="{{event.eventid}}">
+                <button class="btn btn-success btn-md" type="submit" value="Login">Прийняти участь</button>
+            </form>
+        {% else %}
+            <h2>UFO вже скомуніздило це голосування (Голосування завершено) </h2>
+            <h3>Подія відбудеться(відбулась) : {{meet_event_date_max}} </h3>
+        {% endif %}
     </div>
 
 

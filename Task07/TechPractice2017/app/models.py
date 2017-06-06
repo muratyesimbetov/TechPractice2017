@@ -9,7 +9,7 @@ import numpy as np
 # Create your models here.
 
 class USER(models.Model):
-    userid = models.AutoField("ID", primary_key=True)
+    userid = models.IntegerField(primary_key=True)
     name = models.CharField("name", max_length=20)
     login = models.CharField("nickname", max_length=20)
     email = models.CharField("e-mail", max_length=50)
@@ -78,9 +78,9 @@ def MakePairDateEvent(mdateId, evntId):
 ###############################################################################################################################
 
 
-def CreateUser(n, l, e, pas, c):
+def CreateUser(id, n, l, e, pas, c):
     from app.models import USER
-    usr = USER(name=n, login=l, email=e, password=pas, city=c)
+    usr = USER(id,name=n, login=l, email=e, password=pas, city=c)
     usr.save()
 
 def GetUserInfo(uid):
@@ -112,6 +112,16 @@ def CreateEventTotal(name,descript,place,init_date,vote_start_date,vote_end_date
     from app.models import EVENT
     evt = EVENT(name=name,details=descript,place=place,date=init_date,votingStart=vote_start_date,votingEnd=vote_end_date)
     evt.save()
+
+    from app.models import MDATE
+    from app.models import EVTDATE
+
+    mdate = MDATE(meetingDateTimeS=init_date)
+    mdate.save()
+
+    evnt_date = EVTDATE(evt=evt,dat = mdate)
+    evnt_date.save()
+
     return evt.eventid
 
     
@@ -151,8 +161,23 @@ def GetAllEvent():
     
 
 def GetEvtDatesForEvent(evtid):
-    return EVTDATE.objects.filter(evtdateid=evtid)
+    event = EVENT.objects.get(eventid=evtid)
+    event_date = EVTDATE.objects.filter(evt =event)    
+    return event_date
+    #return 
 
+def GetMaxEvtDateFromEvent(evtid):
+    from django.db.models import Max
+    from django.db.models import Count
+
+    try :
+        event = EVENT.objects.get(eventid=evtid)
+        event_date = EVTDATE.objects.filter(evt =event).annotate(vote_count=Count('vote')).order_by("-vote")
+        event_date_max_vote = event_date[0]
+
+        return event_date_max_vote.dat.meetingDateTimeS
+    except Exception : 
+        return 'No'
 
 def GetAllEventOrder(order, reverse):
     '''return all event'''
@@ -201,4 +226,8 @@ def GetVotedUsersCount():
     from django.db.models import Count
     uList = (VOTE.objects.values('usr').distinct())
     return len(uList) 
+
+def UserDbSynhron(user_auth):
+    CreateUser(user_auth.id,user_auth.first_name,user_auth.username,user_auth.email,user_auth.password[:30],'Kiev')
+
 
